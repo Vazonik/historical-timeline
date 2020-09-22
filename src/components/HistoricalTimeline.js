@@ -1,43 +1,25 @@
 import React, { useState } from 'react';
+import Periods from './Periods';
 
 function HistoricalTimeline({ data, width=1000 }) {
-  let [zoomMultiplier, setZoomMultiplier] = useState(1);
 
-  let zoom = (e) => {
-    let newZoom = zoomMultiplier + zoomMultiplier * e.deltaY * -0.01;
-    if(newZoom >= 1) {
-      setZoomMultiplier(newZoom)
-    } else if (newZoom < 1) {
-      setZoomMultiplier(1);
-    }
-  }
-
-  const unitSize = width / data.length;
-  const timelineWidth = width * zoomMultiplier;
+  let [focus, setFocus] = useState(0);
 
   return (
-    <div onWheel={zoom} style={{width: width, height: 40, padding: 40, border: '1px solid black', overflow: 'hidden', position: 'relative'}}>
-      <div style={{whiteSpace: 'nowrap', position: 'absolute'}}>
-      {
-      data.periods.map(periodsGroup => 
-        <div style={{height: 20, width: timelineWidth}}>
-          {
-            periodsGroup.map(period =>
-              <div
-              style={{
-                height: '100%',
-                width: period.length * unitSize * zoomMultiplier,
-                backgroundColor: period.color,
-                display: 'inline-block'
-              }}
-              key={period.key}
-              ></div>
-            )
-          }
-        </div>
-      )}
+    <div>
+      <div
+        style={{width: width, height: 40, border: '1px solid black', overflow: 'hidden'}}      
+      >
+        <Periods
+          periods={data.periods}
+          width={width}
+          fullLength={data.length}
+          getUnitsOnFocus={units => setFocus(units)}
+        />
       </div>
+      <div style={{padding: 10}}>{data.length - Math.round(focus)} mln lat temu</div>
     </div>
+    
   );
 }
 
