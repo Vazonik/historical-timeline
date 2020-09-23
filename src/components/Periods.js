@@ -17,12 +17,16 @@ function Periods({ periods, width, height, fullLength, getUnitsOnFocus}) {
   }
 
   let zoom = e => {
-    let newZoom = zoomMultiplier + e.deltaY * -0.03;
+    const zoomExplanation = 0.05;
+
+    let newZoom = zoomMultiplier + e.deltaY * -zoomExplanation;
+
     if (newZoom < 1) {
       newZoom = 1;
     }
-
-    let newOffset = (focusPosition - offset) * ((zoomMultiplier / newZoom) - 1) + offset;
+    
+    const zoomSnippet = zoomExplanation * focusPosition * e.deltaY;
+    let newOffset = (focusPosition - offset - zoomSnippet) * ((zoomMultiplier / newZoom) - 1) + offset;
     
     if(newOffset > 0) {
       newOffset = 0;
