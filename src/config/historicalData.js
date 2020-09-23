@@ -98,6 +98,7 @@ export default ({
   events: [
 
   ],
-  benchmark: 0,
+  unitName: 'mln lat',
+  benchmark: 4567,
   length: 4567
 });
